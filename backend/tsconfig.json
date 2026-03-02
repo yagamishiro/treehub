@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "CommonJS",
+    "module": "ESNext",
     "lib": ["ES2022"],
     "outDir": "dist",
     "rootDir": "./",
@@ -11,8 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true
+    "noUnusedParameters": true
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules", "dist"]
