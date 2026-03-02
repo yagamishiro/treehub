@@ -1,6 +1,5 @@
 import rateLimit from 'express-rate-limit';
 import { body, validationResult } from 'express-validator';
-import csurf from 'csurf';
 import { Request, Response, NextFunction } from "express";
 
 // Rate limiting middleware for login and register
@@ -15,9 +14,6 @@ export const registerLimiter = rateLimit({
   max: 5, // limit each IP to 5 requests per windowMs
   message: 'Too many registration attempts, please try again later.'
 });
-
-// CSRF protection middleware
-export const csrfProtection = csurf({ cookie: true });
 
 // Validation and sanitization middleware for registration
 export const validateRegister = [

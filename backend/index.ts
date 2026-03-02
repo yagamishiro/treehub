@@ -19,16 +19,28 @@ const FRONTEND_URL = process.env.FRONTEND_URL
 
 app.use(cors({
   origin: FRONTEND_URL,
-  credentials: true, // allow cookies/auth headers
+  credentials: true,
 }));
 app.use(express.json());
 app.use(cookieParser());
 
+const csrfProtection = csrf({
+  cookie: {
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  },
+});
+
+app.get("/api/csrf-token", csrfProtection, (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});
+
 // API Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/listings", listingRoutes);
-app.use("/api/messages", messageRoutes);
-app.use("/api/notifications", notificationRoutes);
+app.use("/api/auth", csrfProtection, authRoutes);
+app.use("/api/listings", csrfProtection, listingRoutes);
+app.use("/api/messages", csrfProtection, messageRoutes);
+app.use("/api/notifications", csrfProtection, notificationRoutes);
 
 app.get("/api/categories", async (_req, res) => {
   const [categories] = await db.query("SELECT * FROM categories");
@@ -36,13 +48,6 @@ app.get("/api/categories", async (_req, res) => {
 });
 
 app.get("/api/feature-flags", (_req, res) => {
-  // CSRF token endpoint
-  const csrfProtection = csrf({ cookie: true });
-  app.use(csrfProtection);
-
-  app.get('/api/csrf-token', (_req, res) => {
-    res.json({ csrfToken: (_req as any).csrfToken() });
-  });
   res.json({
     enable_email_verification: process.env.ENABLE_EMAIL_VERIFICATION === "true",
     enable_in_app_notifications: process.env.ENABLE_IN_APP_NOTIFICATIONS === "true",
