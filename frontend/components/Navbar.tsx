@@ -8,8 +8,8 @@ import {
   Home as HomeIcon, 
   List as ListIcon
 } from 'lucide-react';
-import { useAuthStore } from '../store';
-import { cn } from '../lib/utils';
+import { useAuthStore } from '../store.js';
+import { cn } from '../lib/utils.js';
 
 export const Navbar = () => {
   const { user, logout } = useAuthStore();

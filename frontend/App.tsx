@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useAuthStore, useConfigStore } from './store';
+import { useAuthStore, useConfigStore } from './store.js.js';
 
 // Components
-import { Navbar } from './components/Navbar';
+import { Navbar } from './components/Navbar.js';
 
 // Pages
-import { Home } from './pages/Home';
-import { Login } from './pages/Login';
-import { ListingDetail } from './pages/ListingDetail';
-import { CreateListing } from './pages/CreateListing';
-import { Messages } from './pages/Messages';
-import { ChatView } from './pages/ChatView';
-import { Notifications } from './pages/Notifications';
-import { Profile } from './pages/Profile';
-import { MyListings } from './pages/MyListings';
+import { Home } from './pages/Home.js';
+import { Login } from './pages/Login.js';
+import { ListingDetail } from './pages/ListingDetail.js';
+import { CreateListing } from './pages/CreateListing.js';
+import { Messages } from './pages/Messages.js';
+import { ChatView } from './pages/ChatView.js';
+import { Notifications } from './pages/Notifications.js';
+import { Profile } from './pages/Profile.js';
+import { MyListings } from './pages/MyListings.js';
 
 export default function App() {
   const { user, setUser, isLoading } = useAuthStore();

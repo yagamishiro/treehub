@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, MessageSquare, ChevronLeft, ChevronRight, Package } from 'lucide-react';
-import { useAuthStore } from '../store';
+import { useAuthStore } from '../store.js';
 
 export const ListingDetail = () => {
   const [csrfToken, setCsrfToken] = useState<string>('');

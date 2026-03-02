@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { useAuthStore, useConfigStore } from '../store';
+import { useAuthStore, useConfigStore } from '../store.js';
 
 export const Login = () => {
   const [csrfToken, setCsrfToken] = useState<string>('');

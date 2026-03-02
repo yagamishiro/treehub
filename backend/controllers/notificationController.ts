@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { NotificationModel } from "../models/Notification";
+import { NotificationModel } from '../models/Notification.js';
 
 export class NotificationController {
   static async getAll(req: any, res: Response) {

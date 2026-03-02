@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { UserModel } from "../models/User";
-import { sendVerificationEmail } from "../services/email";
-import { uploadImage } from "../services/cloudinary";
+import { UserModel } from '../models/User.js';
+import { sendVerificationEmail } from '../services/email.js';
+import { uploadImage } from '../services/cloudinary.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || "trees-residences-secret";
 

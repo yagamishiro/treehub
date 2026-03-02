@@ -1,10 +1,10 @@
 import { Response } from "express";
-import { MessageModel } from "../models/Message";
-import { ListingModel } from "../models/Listing";
-import { UserModel } from "../models/User";
-import { uploadImage } from "../services/cloudinary";
-import { sendMessageNotificationEmail } from "../services/email";
-import db from "../db";
+import { MessageModel } from '../models/Message.js';
+import { ListingModel } from '../models/Listing.js';
+import { UserModel } from '../models/User.js';
+import { uploadImage } from '../services/cloudinary.js';
+import { sendMessageNotificationEmail } from '../services/email.js';
+import db from '../db.js';
 
 export class MessageController {
   static async getConversations(req: any, res: Response) {

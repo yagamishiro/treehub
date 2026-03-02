@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, PlusCircle, Clock, Package, Wrench, Printer, Smartphone, Briefcase } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '../lib/utils.js';
 
 export const Home = () => {
   const [listings, setListings] = useState<any[]>([]);

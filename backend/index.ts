@@ -2,14 +2,14 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import db, { initDb } from "./db";
+import db, { initDb } from './db.js';
 import csrf from 'csurf';
 
 // Route Imports
-import authRoutes from "./routes/auth";
-import listingRoutes from "./routes/listings";
-import messageRoutes from "./routes/messages";
-import notificationRoutes from "./routes/notifications";
+import authRoutes from './routes/auth.js';
+import listingRoutes from './routes/listings.js';
+import messageRoutes from './routes/messages.js';
+import notificationRoutes from './routes/notifications.js';
 
 dotenv.config();
 

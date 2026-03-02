@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ListingModel } from "../models/Listing";
-import { uploadImage } from "../services/cloudinary";
+import { ListingModel } from '../models/Listing.js';
+import { uploadImage } from '../services/cloudinary.js';
 
 export class ListingController {
   static async getAll(req: Request, res: Response) {

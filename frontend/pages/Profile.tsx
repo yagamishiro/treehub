@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { LogOut, Camera, Loader2, Package } from 'lucide-react';
-import { useAuthStore } from '../store';
+import { useAuthStore } from '../store.js';
 
 export const Profile = () => {
   const [csrfToken, setCsrfToken] = useState<string>('');

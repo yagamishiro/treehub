@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
-import { MessageController } from "../controllers/messageController";
-import { authenticateToken } from "../middleware/auth";
+import { MessageController } from '../controllers/messageController.js';
+import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });

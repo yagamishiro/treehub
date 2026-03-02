@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageSquare } from 'lucide-react';
-import { useAuthStore } from '../store';
-import { cn } from '../lib/utils';
+import { useAuthStore } from '../store.js';
+import { cn } from '../lib/utils.js';
 
 export const Messages = () => {
   const [conversations, setConversations] = useState<any[]>([]);

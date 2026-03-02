@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight, MessageSquare, Image as ImageIcon, X, Send } from 'lucide-react';
-import { useAuthStore } from '../store';
-import { cn } from '../lib/utils';
+import { useAuthStore } from '../store.js';
+import { cn } from '../lib/utils.js';
 
 export const ChatView = () => {
   const [csrfToken, setCsrfToken] = useState<string>('');

@@ -1,8 +1,8 @@
 import express from "express";
-import { AuthController } from "../controllers/authController";
-import { authenticateToken } from "../middleware/auth";
+import { AuthController } from '../controllers/authController.js';
+import { authenticateToken } from '../middleware/auth.js';
 import multer from "multer";
-import { loginLimiter, registerLimiter, validateRegister, validateLogin, csrfProtection, validateFileUpload } from "../middleware/security";
+import { loginLimiter, registerLimiter, validateRegister, validateLogin, csrfProtection, validateFileUpload } from '../middleware/security.js';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
