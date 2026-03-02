@@ -16,9 +16,9 @@ export const Login = () => {
   const { setUser } = useAuthStore();
   const { flags } = useConfigStore();
   const navigate = useNavigate();
+  const apiBase = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
-    const apiBase = import.meta.env.VITE_API_URL || '';
     fetch(`${apiBase}/api/csrf-token`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => setCsrfToken(data.csrfToken));
@@ -29,7 +29,7 @@ export const Login = () => {
     const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
     const body = isRegister ? { name, email, password, tower, unit } : { email, password };
     
-    const res = await fetch(endpoint, {
+    const res = await fetch(`${apiBase}${endpoint}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

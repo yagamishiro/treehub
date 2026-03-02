@@ -22,7 +22,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   isLoading: true,
   setUser: (user) => set({ user, isLoading: false }),
   logout: async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    const apiBase = import.meta.env.VITE_API_URL || '';
+    await fetch(`${apiBase}/api/auth/logout`, { method: 'POST' });
     set({ user: null });
   },
 }));

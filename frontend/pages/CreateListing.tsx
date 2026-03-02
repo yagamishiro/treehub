@@ -14,9 +14,10 @@ export const CreateListing = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const apiBase = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
-    fetch('/api/categories').then(res => res.json()).then(setCategories);
+    fetch(`${apiBase}/api/categories`).then(res => res.json()).then(setCategories);
   }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +63,7 @@ export const CreateListing = () => {
     images.forEach(image => formData.append('images', image));
 
     try {
-      const res = await fetch('/api/listings', {
+      const res = await fetch(`${apiBase}/api/listings`, {
         method: 'POST',
         body: formData
       });
