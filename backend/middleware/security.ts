@@ -1,6 +1,7 @@
 import rateLimit from 'express-rate-limit';
 import { body, validationResult } from 'express-validator';
 import csurf from 'csurf';
+import { Request, Response, NextFunction } from "express";
 
 // Rate limiting middleware for login and register
 export const loginLimiter = rateLimit({
@@ -25,7 +26,7 @@ export const validateRegister = [
   body('password').isLength({ min: 6 }),
   body('tower').trim().escape(),
   body('unit').trim().escape(),
-  (req, res, next) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -38,7 +39,7 @@ export const validateRegister = [
 export const validateLogin = [
   body('email').isEmail().normalizeEmail(),
   body('password').isLength({ min: 6 }),
-  (req, res, next) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -48,7 +49,7 @@ export const validateLogin = [
 ];
 
 // File upload validation (for profile images)
-export function validateFileUpload(req, res, next) {
+export function validateFileUpload(req: Request, res: Response, next: NextFunction) {
   if (req.file) {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!allowedTypes.includes(req.file.mimetype)) {

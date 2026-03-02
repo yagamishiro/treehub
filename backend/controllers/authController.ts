@@ -145,7 +145,7 @@ export class AuthController {
     } });
   }
 
-  static logout(req: Request, res: Response) {
+  static logout(_req: Request, res: Response) {
     res.clearCookie("token");
     res.json({ message: "Logged out" });
   }

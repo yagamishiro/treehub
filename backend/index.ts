@@ -26,18 +26,18 @@ app.use("/api/listings", listingRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-app.get("/api/categories", async (req, res) => {
+app.get("/api/categories", async (_req, res) => {
   const [categories] = await db.query("SELECT * FROM categories");
   res.json(categories);
 });
 
-app.get("/api/feature-flags", (req, res) => {
+app.get("/api/feature-flags", (_req, res) => {
   // CSRF token endpoint
   const csrfProtection = csrf({ cookie: true });
   app.use(csrfProtection);
 
-  app.get('/api/csrf-token', (req, res) => {
-    res.json({ csrfToken: req.csrfToken() });
+  app.get('/api/csrf-token', (_req, res) => {
+    res.json({ csrfToken: (_req as any).csrfToken() });
   });
   res.json({
     enable_email_verification: process.env.ENABLE_EMAIL_VERIFICATION === "true",
