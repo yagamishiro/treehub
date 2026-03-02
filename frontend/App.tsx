@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useAuthStore, useConfigStore } from './store.js.js';
+import { useAuthStore, useConfigStore } from './store.js';
 
 // Components
 import { Navbar } from './components/Navbar.js';
