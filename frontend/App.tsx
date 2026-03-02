@@ -19,9 +19,10 @@ import { MyListings } from './pages/MyListings.js';
 export default function App() {
   const { user, setUser, isLoading } = useAuthStore();
   const { flags, fetchFlags } = useConfigStore();
+  const apiBase = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
-    fetch('/api/auth/me')
+    fetch(`${apiBase}/api/auth/me`)
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data) setUser(data.user);

@@ -45,7 +45,8 @@ interface ConfigState {
 export const useConfigStore = create<ConfigState>((set) => ({
   flags: null,
   fetchFlags: async () => {
-    const res = await fetch('/api/feature-flags');
+    const apiBase = import.meta.env.VITE_API_URL || '';
+    const res = await fetch(`${apiBase}/api/feature-flags`);
     const flags = await res.json();
     set({ flags });
   },
