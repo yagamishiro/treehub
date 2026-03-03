@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { authFetch } from '../lib/authFetch';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useAuthStore, useConfigStore } from '../store.js';
 
 export const Login = () => {
-  const [csrfToken, setCsrfToken] = useState<string>('');
   const [isRegister, setIsRegister] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [email, setEmail] = useState('');
@@ -18,29 +18,19 @@ export const Login = () => {
   const navigate = useNavigate();
   const apiBase = import.meta.env.VITE_API_URL || '';
 
-  useEffect(() => {
-    fetch(`${apiBase}/api/csrf-token`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => setCsrfToken(data.csrfToken));
-  }, []);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
     const body = isRegister ? { name, email, password, tower, unit } : { email, password };
     
-    const res = await fetch(`${apiBase}${endpoint}`, {
+    const res = await authFetch(`${apiBase}${endpoint}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'CSRF-Token': csrfToken
-      },
       body: JSON.stringify(body),
-      credentials: 'include'
     });
     
     if (res.ok) {
       const data = await res.json();
+      localStorage.setItem("access_token", data.token);
       setUser(data.user);
       if (flags?.enable_email_verification && data.user.is_verified === 0) {
         setIsVerifying(true);
@@ -56,18 +46,14 @@ export const Login = () => {
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
     const apiBase = import.meta.env.VITE_API_URL || '';
-    const res = await fetch(`${apiBase}/api/auth/verify`, {
+    const res = await authFetch(`${apiBase}/api/auth/verify`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'CSRF-Token': csrfToken
-      },
       body: JSON.stringify({ code: verificationCode }),
-      credentials: 'include'
     });
     
     if (res.ok) {
       const data = await res.json();
+      localStorage.setItem("access_token", data.token);
       setUser(data.user);
       navigate('/');
     } else {

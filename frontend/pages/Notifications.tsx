@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { authFetch } from '../lib/authFetch';
 import { Link } from 'react-router-dom';
 import { Bell } from 'lucide-react';
 import { cn } from '../lib/utils.js';
 
 export const Notifications = () => {
-  const [csrfToken, setCsrfToken] = useState<string>('');
   const [notifications, setNotifications] = useState<any[]>([]);
 
   useEffect(() => {
     const apiBase = import.meta.env.VITE_API_URL || '';
-    fetch(`${apiBase}/api/csrf-token`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => setCsrfToken(data.csrfToken));
-    fetch(`${apiBase}/api/notifications`).then(res => res.json()).then(setNotifications);
+    authFetch(`${apiBase}/api/notifications`).then(res => res.json()).then(setNotifications);
     // Mark as read
-    fetch(`${apiBase}/api/notifications/read`, { method: 'PATCH', headers: { 'CSRF-Token': csrfToken }, credentials: 'include' });
+    authFetch(`${apiBase}/api/notifications/read`, { method: 'PATCH' });
   }, []);
 
   return (

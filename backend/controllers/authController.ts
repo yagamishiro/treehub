@@ -36,9 +36,16 @@ export class AuthController {
         }
       }
 
-      const token = jwt.sign({ id: userId, email, name, tower, unit, profile_image_url: null, is_verified: isVerified }, JWT_SECRET);
-      res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "none" });
-      res.json({ user: { id: userId, name, email, tower, unit, profile_image_url: null, is_verified: isVerified } });
+      const token = jwt.sign(
+        { id: userId, email, name, tower, unit, is_verified: isVerified },
+        JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+
+      res.json({
+        token,
+        user: { id: userId, name, email, tower, unit, is_verified: isVerified }
+      });
     } catch (e) {
       console.error(e);
       res.status(400).json({ error: "Email already exists" });
@@ -101,18 +108,13 @@ export class AuthController {
 
     await UserModel.verify(req.user.id);
     
-    const token = jwt.sign({ 
-      id: user.id, 
-      email: user.email, 
-      name: user.name, 
-      tower: user.tower, 
-      unit: user.unit, 
-      profile_image_url: user.profile_image_url,
-      is_verified: 1 
-    }, JWT_SECRET);
-    
-    res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "none" });
-    res.json({ message: "Account verified successfully", user: { ...user, is_verified: 1 } });
+    const token = jwt.sign(
+      { ...user, is_verified: 1 },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.json({ token, user: { ...user, is_verified: 1 } });
   }
 
   static async login(req: Request, res: Response) {
@@ -123,26 +125,32 @@ export class AuthController {
       return res.status(401).json({ error: "Invalid credentials" });
     }
     
-    const token = jwt.sign({ 
-      id: user.id, 
-      email: user.email, 
-      name: user.name, 
-      tower: user.tower, 
-      unit: user.unit, 
-      profile_image_url: user.profile_image_url,
-      is_verified: user.is_verified 
-    }, JWT_SECRET);
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        tower: user.tower,
+        unit: user.unit,
+        profile_image_url: user.profile_image_url,
+        is_verified: user.is_verified,
+      },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
     
-    res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "none" });
-    res.json({ user: { 
-      id: user.id, 
-      name: user.name, 
-      email: user.email, 
-      tower: user.tower, 
-      unit: user.unit, 
-      profile_image_url: user.profile_image_url,
-      is_verified: user.is_verified 
-    } });
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        tower: user.tower,
+        unit: user.unit,
+        profile_image_url: user.profile_image_url,
+        is_verified: user.is_verified,
+      },
+    });
   }
 
   static logout(_req: Request, res: Response) {

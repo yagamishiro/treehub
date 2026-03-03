@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { authFetch } from '../lib/authFetch';
 import { useNavigate } from 'react-router-dom';
 import { Camera, X, Plus } from 'lucide-react';
 
@@ -17,7 +18,7 @@ export const CreateListing = () => {
   const apiBase = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
-    fetch(`${apiBase}/api/categories`).then(res => res.json()).then(setCategories);
+    authFetch(`${apiBase}/api/categories`).then(res => res.json()).then(setCategories);
   }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +64,7 @@ export const CreateListing = () => {
     images.forEach(image => formData.append('images', image));
 
     try {
-      const res = await fetch(`${apiBase}/api/listings`, {
+      const res = await authFetch(`${apiBase}/api/listings`, {
         method: 'POST',
         body: formData
       });

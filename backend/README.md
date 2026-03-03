@@ -5,7 +5,7 @@
 ## Features
 - RESTful API (Express)
 - MySQL database
-- Authentication, CSRF protection, rate limiting
+- Authentication, rate limiting
 - Email and image upload support
 
 ## Local Development

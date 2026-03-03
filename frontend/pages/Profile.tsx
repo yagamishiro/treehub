@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { authFetch } from '../lib/authFetch';
 import { useNavigate, Link } from 'react-router-dom';
 import { LogOut, Camera, Loader2, Package } from 'lucide-react';
 import { useAuthStore } from '../store.js';
 
 export const Profile = () => {
-  const [csrfToken, setCsrfToken] = useState<string>('');
   const { user, setUser, logout } = useAuthStore();
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
 
   if (!user) return null;
-
-  useEffect(() => {
-    const apiBase = import.meta.env.VITE_API_URL || '';
-    fetch(`${apiBase}/api/csrf-token`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => setCsrfToken(data.csrfToken));
-  }, []);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -28,13 +21,9 @@ export const Profile = () => {
 
     try {
       const apiBase = import.meta.env.VITE_API_URL || '';
-      const res = await fetch(`${apiBase}/api/auth/update-profile`, {
+      const res = await authFetch(`${apiBase}/api/auth/update-profile`, {
         method: 'PATCH',
-        body: formData,
-        headers: {
-          'CSRF-Token': csrfToken
-        },
-        credentials: 'include'
+        body: formData
       });
       if (res.ok) {
         const data = await res.json();

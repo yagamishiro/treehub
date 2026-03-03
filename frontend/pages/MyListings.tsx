@@ -1,29 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { authFetch } from '../lib/authFetch';
 import { Link } from 'react-router-dom';
 import { Package, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export const MyListings = () => {
-  const [csrfToken, setCsrfToken] = useState<string>('');
   const [listings, setListings] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const apiBase = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
-    fetchCsrfToken();
-  }, []);
-
-  const fetchCsrfToken = async () => {
-    const apiBase = import.meta.env.VITE_API_URL || '';
-    const res = await fetch(`${apiBase}/api/csrf-token`, { credentials: 'include' });
-    const data = await res.json();
-    setCsrfToken(data.csrfToken);
     fetchListings();
-  };
+  }, []);
 
   const fetchListings = async () => {
     try {
-      const res = await fetch(`${apiBase}/api/listings/my`);
+      const res = await authFetch(`${apiBase}/api/listings/my`);
       const data = await res.json();
       setListings(data);
     } catch (err) {
@@ -35,14 +27,12 @@ export const MyListings = () => {
 
   const handleStatusUpdate = async (id: number, status: string) => {
     try {
-      const res = await fetch(`${apiBase}/api/listings/${id}/status`, {
+      const res = await authFetch(`${apiBase}/api/listings/${id}/status`, {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json',
-          'CSRF-Token': csrfToken
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ status }),
-        credentials: 'include'
+        body: JSON.stringify({ status })
       });
       if (res.ok) {
         fetchListings();

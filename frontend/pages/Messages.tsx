@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { authFetch } from '../lib/authFetch';
 import { Link } from 'react-router-dom';
 import { MessageSquare } from 'lucide-react';
 import { useAuthStore } from '../store.js';
@@ -10,7 +11,7 @@ export const Messages = () => {
 
   useEffect(() => {
     const apiBase = import.meta.env.VITE_API_URL || '';
-    fetch(`${apiBase}/api/messages`).then(res => res.json()).then(setConversations);
+    authFetch(`${apiBase}/api/messages`).then(res => res.json()).then(setConversations);
   }, []);
 
   return (

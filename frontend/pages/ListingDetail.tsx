@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { authFetch } from '../lib/authFetch';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, MessageSquare, ChevronLeft, ChevronRight, Package } from 'lucide-react';
 import { useAuthStore } from '../store.js';
 
 export const ListingDetail = () => {
-  const [csrfToken, setCsrfToken] = useState<string>('');
   const { id } = useParams();
   const [listing, setListing] = useState<any>(null);
   const [message, setMessage] = useState('');
@@ -15,30 +15,24 @@ export const ListingDetail = () => {
 
   useEffect(() => {
     const apiBase = import.meta.env.VITE_API_URL || '';
-    fetch(`${apiBase}/api/csrf-token`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => setCsrfToken(data.csrfToken));
-    fetch(`${apiBase}/api/listings/${id}`).then(res => res.ok ? res.json() : null).then(setListing);
+    authFetch(`${apiBase}/api/listings/${id}`).then(res => res.ok ? res.json() : null).then(setListing);
   }, [id]);
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
     const apiBase = import.meta.env.VITE_API_URL || '';
-    const res = await fetch(`${apiBase}/api/messages`, {
+    const res = await authFetch(`${apiBase}/api/messages`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'CSRF-Token': csrfToken
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         listing_id: listing.id,
         receiver_id: listing.user_id,
         content: message
-      }),
-      credentials: 'include'
+      })
     });
     if (res.ok) {
-      alert('Message sent!');
       setMessage('');
       navigate('/messages');
     }

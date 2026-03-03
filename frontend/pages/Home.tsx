@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { authFetch } from '../lib/authFetch';
 import { Link } from 'react-router-dom';
 import { Search, PlusCircle, Clock, Package, Wrench, Printer, Smartphone, Briefcase } from 'lucide-react';
 import { cn } from '../lib/utils.js';
@@ -17,7 +18,7 @@ export const Home = () => {
   }, [selectedCategory]);
 
   const fetchCategories = async () => {
-    const res = await fetch(`${apiBase}/api/categories`);
+    const res = await authFetch(`${apiBase}/api/categories`);
     setCategories(await res.json());
   };
 
@@ -27,7 +28,7 @@ export const Home = () => {
     if (selectedCategory) params.append('category', selectedCategory);
     if (search) params.append('search', search);
     
-    const res = await fetch(`${apiBase}/api/listings?${params.toString()}`);
+    const res = await authFetch(`${apiBase}/api/listings?${params.toString()}`);
     setListings(await res.json());
     setIsLoading(false);
   };

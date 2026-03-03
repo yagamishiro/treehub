@@ -3,7 +3,6 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import db, { initDb } from './db.js';
-import csrf from 'csurf';
 
 // Route Imports
 import authRoutes from './routes/auth.js';
@@ -19,28 +18,17 @@ const FRONTEND_URL = process.env.FRONTEND_URL
 
 app.use(cors({
   origin: FRONTEND_URL,
-  credentials: true,
+  credentials: false,
 }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const csrfProtection = csrf({
-  cookie: {
-    httpOnly: true,
-    sameSite: "none",
-    secure: true,
-  },
-});
-
-app.get("/api/csrf-token", csrfProtection, (req, res) => {
-  res.json({ csrfToken: req.csrfToken() });
-});
-
 // API Routes
-app.use("/api/auth", csrfProtection, authRoutes);
-app.use("/api/listings", csrfProtection, listingRoutes);
-app.use("/api/messages", csrfProtection, messageRoutes);
-app.use("/api/notifications", csrfProtection, notificationRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/listings", listingRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 app.get("/api/categories", async (_req, res) => {
   const [categories] = await db.query("SELECT * FROM categories");

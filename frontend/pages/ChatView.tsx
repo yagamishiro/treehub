@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { authFetch } from '../lib/authFetch';
 import { createPortal } from 'react-dom';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight, MessageSquare, Image as ImageIcon, X, Send } from 'lucide-react';
@@ -6,7 +7,6 @@ import { useAuthStore } from '../store.js';
 import { cn } from '../lib/utils.js';
 
 export const ChatView = () => {
-  const [csrfToken, setCsrfToken] = useState<string>('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [modalImage, setModalImage] = useState<string | null>(null);
   const { listingId, otherUserId } = useParams();
@@ -23,13 +23,9 @@ export const ChatView = () => {
   const apiBase = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
-    // Fetch CSRF token on mount
-    fetch(`${apiBase}/api/csrf-token`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => setCsrfToken(data.csrfToken));
-    fetch(`${apiBase}/api/listings/${listingId}`).then(res => res.json()).then(setListing);
+    authFetch(`${apiBase}/api/listings/${listingId}`).then(res => res.json()).then(setListing);
     const fetchMessages = async () => {
-      const res = await fetch(`${apiBase}/api/messages/${listingId}/${otherUserId}`);
+      const res = await authFetch(`${apiBase}/api/messages/${listingId}/${otherUserId}`);
       if (res.ok) setMessages(await res.json());
     };
     fetchMessages();
@@ -125,20 +121,16 @@ export const ChatView = () => {
     }
 
     try {
-      const res = await fetch(`${apiBase}/api/messages`, {
+      const res = await authFetch(`${apiBase}/api/messages`, {
         method: 'POST',
-        body: formData,
-        headers: {
-          'CSRF-Token': csrfToken
-        },
-        credentials: 'include'
+        body: formData
       });
       
       if (res.ok) {
         setNewMessage('');
         clearImage();
         setJustSent(true);
-        const updated = await fetch(`${apiBase}/api/messages/${listingId}/${otherUserId}`);
+        const updated = await authFetch(`${apiBase}/api/messages/${listingId}/${otherUserId}`);
         setMessages(await updated.json());
       }
     } catch (error) {
