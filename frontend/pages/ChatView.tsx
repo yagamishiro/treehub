@@ -236,7 +236,10 @@ export const ChatView = () => {
           document.body
         )}
 
-        <form onSubmit={handleSend} className="bg-white p-4 rounded-b-3xl border border-gray-100 flex gap-2 shadow-sm items-center relative">
+        <form 
+          onSubmit={handleSend} 
+          className="bg-white p-3 rounded-b-3xl border border-gray-100 flex flex-col sm:flex-row gap-2 sm:gap-2 shadow-sm items-stretch sm:items-center relative"
+        >
           <input 
             type="file" 
             accept="image/*" 
@@ -244,28 +247,30 @@ export const ChatView = () => {
             ref={fileInputRef}
             onChange={handleImageSelect}
           />
-          <button 
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="p-2 text-gray-400 hover:text-primary-600 transition-colors"
-          >
-            <ImageIcon className="w-6 h-6" />
-          </button>
-          <button
-            type="button"
-            onClick={() => setShowEmojiPicker(v => !v)}
-            className="p-2 text-gray-400 hover:text-yellow-500 transition-colors"
-            aria-label="Add emoji"
-          >
-            <span role="img" aria-label="emoji">😊</span>
-          </button>
+          <div className="flex gap-2 items-center mb-2 sm:mb-0">
+            <button 
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="p-2 text-gray-400 hover:text-primary-600 transition-colors"
+            >
+              <ImageIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowEmojiPicker(v => !v)}
+              className="p-2 text-gray-400 hover:text-yellow-500 transition-colors"
+              aria-label="Add emoji"
+            >
+              <span role="img" aria-label="emoji" className="text-lg sm:text-xl">😊</span>
+            </button>
+          </div>
           {showEmojiPicker && (
             <div ref={pickerRef} className="absolute bottom-16 left-0 z-50" />
           )}
           <input 
             type="text" 
             placeholder="Type a message..."
-            className="flex-1 px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 outline-none transition-all"
+            className="flex-1 px-3 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 outline-none transition-all text-base sm:text-sm"
             value={newMessage}
             onChange={e => setNewMessage(e.target.value)}
             disabled={isSending}
@@ -274,14 +279,15 @@ export const ChatView = () => {
             type="submit"
             disabled={isSending || (!newMessage.trim() && !selectedImage)}
             className={cn(
-              "bg-primary-600 text-white p-2 rounded-xl transition-all",
+              "bg-primary-600 text-white p-2 rounded-xl transition-all flex items-center justify-center w-full sm:w-auto",
               (isSending || (!newMessage.trim() && !selectedImage)) ? "opacity-50 cursor-not-allowed" : "hover:bg-primary-700"
             )}
+            style={{ minHeight: '40px' }}
           >
             {isSending ? (
-              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
             ) : (
-              <Send className="w-6 h-6" />
+              <Send className="w-5 h-5 sm:w-6 sm:h-6" />
             )}
           </button>
         </form>
