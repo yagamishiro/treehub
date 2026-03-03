@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { authFetch } from './lib/authFetch';
 
 interface User {
   id: number;
@@ -23,7 +24,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   setUser: (user) => set({ user, isLoading: false }),
   logout: async () => {
     const apiBase = import.meta.env.VITE_API_URL || '';
-    await fetch(`${apiBase}/api/auth/logout`, { method: 'POST' });
+    await authFetch(`${apiBase}/api/auth/logout`, { method: 'POST' });
     set({ user: null });
   },
 }));
@@ -47,7 +48,7 @@ export const useConfigStore = create<ConfigState>((set) => ({
   flags: null,
   fetchFlags: async () => {
     const apiBase = import.meta.env.VITE_API_URL || '';
-    const res = await fetch(`${apiBase}/api/feature-flags`);
+    const res = await authFetch(`${apiBase}/api/feature-flags`);
     const flags = await res.json();
     set({ flags });
   },

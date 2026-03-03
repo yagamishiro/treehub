@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '../store.js';
 import { cn } from '../lib/utils.js';
+import { authFetch } from '../lib/authFetch';
 
 export const Navbar = () => {
   const { user, logout } = useAuthStore();
@@ -21,7 +22,7 @@ export const Navbar = () => {
     if (user) {
       const fetchUnread = async () => {
         const apiBase = import.meta.env.VITE_API_URL || '';
-        const res = await fetch(`${apiBase}/api/notifications/unread-count`);
+        const res = await authFetch(`${apiBase}/api/notifications/unread-count`);
         if (res.ok) setUnreadCounts(await res.json());
       };
       fetchUnread();

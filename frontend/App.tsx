@@ -15,6 +15,7 @@ import { ChatView } from './pages/ChatView.js';
 import { Notifications } from './pages/Notifications.js';
 import { Profile } from './pages/Profile.js';
 import { MyListings } from './pages/MyListings.js';
+import { authFetch } from './lib/authFetch';
 
 export default function App() {
   const { user, setUser, isLoading } = useAuthStore();
@@ -22,7 +23,7 @@ export default function App() {
   const apiBase = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
-    fetch(`${apiBase}/api/auth/me`)
+    authFetch(`${apiBase}/api/auth/me`)
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data) setUser(data.user);
